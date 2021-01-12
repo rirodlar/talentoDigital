@@ -131,7 +131,6 @@ export default {
             }).then((result) => {
               if(result.value) {
                 this.$store.dispatch('actualizandojuguete',datos);
-                this.$router.push({path: '/administracion'})
               }
             })
           }

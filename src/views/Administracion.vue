@@ -3,7 +3,9 @@
         <h2>Administrando Juguetes</h2>
         <div class="my-4">
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar Juguete</button>
+            <button @click="limpiarFormulario()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar Juguete</button>
+
+
         </div>
         <table class="table">
             <thead>
@@ -33,6 +35,12 @@
                 </tr>
             </tbody>
         </table>
+
+      <div style="text-align: center">
+
+        <button @click="volverHome()" type="button" class="btn btn-primary">Home</button>
+
+      </div>
 
         <!-- modal para agregar juguetes -->
         <div>
@@ -115,17 +123,16 @@ export default {
         ...mapGetters(['enviandoJuguetes'])
     },
     methods: {
-      checkForm: function (e){
-        console.log(e);
-
-        this.errors = [];
-
-        if (!this.codigo) {
-          this.errors.push('El codigo es obligatorio.');
-        }
-
+      limpiarFormulario(){
+          this.codigo = '';
+          this.nombre = '';
+          this.urlImagen = '';
+          this.precio = 0;
+          this.stock = 0;
+          this.errors = [];
       },
       agregandoJuguete(){
+        this.urlImagen = '';
         console.log("validando ....");
 
             this.errors = [];
@@ -185,7 +192,15 @@ export default {
                   window.$('.modal-backdrop').hide();
 
                   this.$store.dispatch('agregandoJuguete',datos);
-                  this.$router.push({path: '/home'})
+                  this.$swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'El producto fue  guardardo correctamente',
+                    showConfirmButton: true
+                  })
+
+                  this.limpiarFormulario();
+              //    this.$router.push({path: '/home'})
                 }
               })
             }
@@ -203,6 +218,12 @@ export default {
           }).then((result) => {
             if(result.value) {
               this.$store.dispatch('borrandoJuguete',id);
+              this.$swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'El producto fue  eliminado correctamente',
+                showConfirmButton: true
+              })
             }
           })
           //
